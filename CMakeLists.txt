@@ -18,7 +18,8 @@ find_package(PythonLibs REQUIRED)
 
 include_directories(${PYTHON_INCLUDE_PATH})
 include_directories(${BOOST_INCLUDE_PATH})
-include_directories(${VXL_CORE_INCLUDE_DIR})
+include_directories(${VXL_VCL_INCLUDE_DIRS})
+include_directories(${VXL_CORE_INCLUDE_DIRS})
 
 link_directories(${BOOST_LIB_PATH})
 link_directories(${VXL_LIBRARY_DIR})
