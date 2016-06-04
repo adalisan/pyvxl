@@ -7,6 +7,8 @@
 #include <vgl/vgl_point_3d.h>
 #include <vgl/algo/vgl_rotation_3d.h>
 
+#include "pyvxl_util.h"
+
 using namespace boost::python;
 
 
@@ -75,6 +77,7 @@ void pyvxl::wrap_vgl()
     .def(init<double,double>())
     .def("__len__", two<vgl_point_2d<double> >)
     .def("__getitem__", vgl_getitem_2d<vgl_point_2d<double> >)
+    .def("__str__", stream2str<vgl_point_2d<double> >)
     .add_property("x", &vgl_get_x<vgl_point_2d<double> >)
     .add_property("y", &vgl_get_y<vgl_point_2d<double> >);
 
@@ -82,6 +85,7 @@ void pyvxl::wrap_vgl()
     .def(init<double,double>())
     .def("__len__", two<vgl_vector_2d<double> >)
     .def("__getitem__",vgl_getitem_2d<vgl_vector_2d<double> >)
+    .def("__str__", stream2str<vgl_vector_2d<double> >)
     .add_property("x", &vgl_vector_2d<double>::x)
     .add_property("y", &vgl_vector_2d<double>::y)
     .def("length", &vgl_vector_2d<double>::length);
@@ -90,6 +94,7 @@ void pyvxl::wrap_vgl()
     .def(init<double,double,double>())
     .def("__len__", three<vgl_point_3d<double> >)
     .def("__getitem__", vgl_getitem_3d<vgl_point_3d<double> >)
+    .def("__str__", stream2str<vgl_point_3d<double> >)
     .add_property("x", vgl_get_x<vgl_point_3d<double> >)
     .add_property("y", vgl_get_y<vgl_point_3d<double> >)
     .add_property("z", vgl_get_z<vgl_point_3d<double> >);
@@ -98,6 +103,7 @@ void pyvxl::wrap_vgl()
     .def(init<double,double,double>())
     .def("__len__", three<vgl_vector_3d<double> >)
     .def("__getitem__", vgl_getitem_3d<vgl_vector_3d<double> >)
+    .def("__str__", stream2str<vgl_vector_3d<double> >)
     .add_property("x", &vgl_vector_3d<double>::x)
     .add_property("y", &vgl_vector_3d<double>::y)
     .add_property("z", &vgl_vector_3d<double>::z)
@@ -106,6 +112,7 @@ void pyvxl::wrap_vgl()
   class_ <vgl_rotation_3d<double> > ("vgl_rotation_3d")
     .def(init<vnl_vector_fixed<double,4> >())
     .def(init<vnl_matrix_fixed<double,3,3> >())
+    .def("__str__", stream2str<vgl_rotation_3d<double> >)
     .def("as_matrix", &vgl_rotation_3d<double>::as_matrix);
 
 }

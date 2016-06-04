@@ -3,6 +3,8 @@
 #include <boost/python/args.hpp>
 #include <vpgl/vpgl_affine_camera.h>
 
+#include "pyvxl_util.h"
+
 using namespace boost::python;
 
 // Helper functions
@@ -20,7 +22,8 @@ void pyvxl::wrap_vpgl()
 {
   class_<vpgl_affine_camera<double> >("vpgl_affine_camera")
     .def(init<vnl_matrix_fixed<double,3,4> >())
-    .def("project", &vpgl_project<vpgl_affine_camera<double> >)
+    .def("__str__", stream2str<vpgl_affine_camera<double> >)
+    .def("project", vpgl_project<vpgl_affine_camera<double> >)
     .def("get_matrix", &vpgl_affine_camera<double>::get_matrix, return_value_policy<return_by_value>());
 
 }
