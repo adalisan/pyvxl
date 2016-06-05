@@ -50,6 +50,10 @@ set(PYVXL_SOURCES
 add_library(pyvxl SHARED ${PYVXL_SOURCES})
 
 target_link_libraries(pyvxl vgl vnl vpgl vil ${Boost_PYTHON_LIBRARY_RELEASE} ${PYTHON_LIBRARIES})
-set_target_properties(pyvxl PROPERTIES OUTPUT_NAME vxl)
-set_target_properties(pyvxl PROPERTIES PREFIX "")
-set_target_properties(pyvxl PROPERTIES SUFFIX ".so")
+set_target_properties(pyvxl PROPERTIES OUTPUT_NAME "vxl")
+if (WIN32)
+  set_target_properties(pyvxl PROPERTIES DEBUG_POSTFIX "_d" SUFFIX ".pyd")
+else()
+  set_target_properties(pyvxl PROPERTIES PREFIX "")
+  set_target_properties(pyvxl PROPERTIES SUFFIX ".so")
+endif()
