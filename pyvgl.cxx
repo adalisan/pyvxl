@@ -5,6 +5,8 @@
 #include <vgl/vgl_point_2d.h>
 #include <vgl/vgl_vector_3d.h>
 #include <vgl/vgl_point_3d.h>
+#include <vgl/vgl_homg_point_2d.h>
+#include <vgl/vgl_homg_point_3d.h>
 #include <vgl/algo/vgl_rotation_3d.h>
 
 #include "pyvxl_util.h"
@@ -14,10 +16,13 @@ using namespace boost::python;
 
 // Helper functions
 template<class T>
+long two(T const&) { return 2;}
+
+template<class T>
 long three(T const&) { return 3;}
 
 template<class T>
-long two(T const&) { return 2;}
+long four(T const&) { return 4;}
 
 
 template<class T>
@@ -64,11 +69,62 @@ double vgl_getitem_2d(T const& a, long i)
 }
 
 template<class T>
+double vgl_getitem_homg_2d(T const& a, long i)
+{
+  // wrap around
+  if (i < 0) {
+    i += 3;
+  }
+  if (i==0) {
+    return a.x();
+  }
+  else if (i==1) {
+    return a.y();
+  }
+  else if (i==2) {
+    return a.w();
+  }
+  else {
+    PyErr_SetString(PyExc_IndexError, "index out of range");
+    boost::python::throw_error_already_set();
+  }
+  return 0; // to avoid compiler warning
+}
+
+template<class T>
+double vgl_getitem_homg_3d(T const& a, long i)
+{
+  // wrap around
+  if (i < 0) {
+    i += 4;
+  }
+  if (i==0) {
+    return a.x();
+  }
+  else if (i==1) {
+    return a.y();
+  }
+  else if (i==2) {
+    return a.z();
+  }
+  else if (i==3) {
+    return a.w();
+  }
+  else {
+    PyErr_SetString(PyExc_IndexError, "index out of range");
+    boost::python::throw_error_already_set();
+  }
+  return 0; // to avoid compiler warning
+}
+
+template<class T>
 double vgl_get_x(T const& a) { return a.x(); }
 template<class T>
 double vgl_get_y(T const& a) { return a.y(); }
 template<class T>
 double vgl_get_z(T const& a) { return a.z(); }
+template<class T>
+double vgl_get_w(T const& a) { return a.w(); }
 
 
 void pyvxl::wrap_vgl()
@@ -80,6 +136,29 @@ void pyvxl::wrap_vgl()
     .def("__str__", stream2str<vgl_point_2d<double> >)
     .add_property("x", &vgl_get_x<vgl_point_2d<double> >)
     .add_property("y", &vgl_get_y<vgl_point_2d<double> >);
+
+  class_<vgl_homg_point_2d<double> > ("vgl_homg_point_2d")
+    .def(init<double,double>())
+    .def(init<double,double,double>())
+    .def(init<vgl_point_2d<double> >())
+    .def("__len__", three<vgl_homg_point_2d<double> >)
+    .def("__getitem__", vgl_getitem_homg_2d<vgl_homg_point_2d<double> >)
+    .def("__str__", stream2str<vgl_homg_point_2d<double> >)
+    .add_property("x", &vgl_get_x<vgl_homg_point_2d<double> >)
+    .add_property("y", &vgl_get_y<vgl_homg_point_2d<double> >)
+    .add_property("w", &vgl_get_w<vgl_homg_point_2d<double> >);
+
+  class_<vgl_homg_point_3d<double> > ("vgl_homg_point_3d")
+    .def(init<double,double,double>())
+    .def(init<double,double,double,double>())
+    .def(init<vgl_point_3d<double> >())
+    .def("__len__", four<vgl_homg_point_3d<double> >)
+    .def("__getitem__", vgl_getitem_homg_3d<vgl_homg_point_3d<double> >)
+    .def("__str__", stream2str<vgl_homg_point_3d<double> >)
+    .add_property("x", &vgl_get_x<vgl_homg_point_3d<double> >)
+    .add_property("y", &vgl_get_y<vgl_homg_point_3d<double> >)
+    .add_property("z", &vgl_get_z<vgl_homg_point_3d<double> >)
+    .add_property("w", &vgl_get_w<vgl_homg_point_3d<double> >);
 
   class_<vgl_vector_2d<double> > ("vgl_vector_2d")
     .def(init<double,double>())
