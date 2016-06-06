@@ -4,7 +4,7 @@
 - [CMake](https://cmake.org)
 - [VXL](https://github.com/vxl/vxl)
 - Python
-- [Boost](www.boost.org) (Boost.Python specifically)
+- [Boost](http://www.boost.org) (Boost.Python specifically)
 
 ### Building:
 You will need to point cmake to your VXL build/install directory via the `VXL_DIR` cmake variable.  If you want to use a version of python different than the one in your PATH, you will need to set `CMAKE_PREFIX_PATH` accordingly.
