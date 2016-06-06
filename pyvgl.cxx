@@ -126,72 +126,106 @@ double vgl_get_z(T const& a) { return a.z(); }
 template<class T>
 double vgl_get_w(T const& a) { return a.w(); }
 
+template<class T>
+void wrap_vgl_point_2d(std::string const& class_name)
+{
+  class_<vgl_point_2d<T> > (class_name.c_str())
+    .def(init<T,T>())
+    .def("__len__", two<vgl_point_2d<T> >)
+    .def("__getitem__", vgl_getitem_2d<vgl_point_2d<T> >)
+    .def("__str__", stream2str<vgl_point_2d<T> >)
+    .add_property("x", &vgl_get_x<vgl_point_2d<T> >)
+    .add_property("y", &vgl_get_y<vgl_point_2d<T> >);
+}
+
+template<class T>
+void wrap_vgl_homg_point_2d(std::string const& class_name)
+{
+  class_<vgl_homg_point_2d<T> > (class_name.c_str())
+    .def(init<T,T>())
+    .def(init<T,T,T>())
+    .def(init<vgl_point_2d<T> >())
+    .def("__len__", three<vgl_homg_point_2d<T> >)
+    .def("__getitem__", vgl_getitem_homg_2d<vgl_homg_point_2d<T> >)
+    .def("__str__", stream2str<vgl_homg_point_2d<T> >)
+    .add_property("x", &vgl_get_x<vgl_homg_point_2d<T> >)
+    .add_property("y", &vgl_get_y<vgl_homg_point_2d<T> >)
+    .add_property("w", &vgl_get_w<vgl_homg_point_2d<T> >);
+}
+
+template<class T>
+void wrap_vgl_point_3d(std::string const& class_name)
+{
+  class_<vgl_point_3d<T> > (class_name.c_str())
+    .def(init<T,T,T>())
+    .def("__len__", three<vgl_point_3d<T> >)
+    .def("__getitem__", vgl_getitem_3d<vgl_point_3d<T> >)
+    .def("__str__", stream2str<vgl_point_3d<T> >)
+    .add_property("x", vgl_get_x<vgl_point_3d<T> >)
+    .add_property("y", vgl_get_y<vgl_point_3d<T> >)
+    .add_property("z", vgl_get_z<vgl_point_3d<T> >);
+}
+
+template<class T>
+void wrap_vgl_homg_point_3d(std::string const& class_name)
+{
+  class_<vgl_homg_point_3d<T> > (class_name.c_str())
+    .def(init<T,T,T>())
+    .def(init<T,T,T,T>())
+    .def(init<vgl_point_3d<T> >())
+    .def("__len__", four<vgl_homg_point_3d<T> >)
+    .def("__getitem__", vgl_getitem_homg_3d<vgl_homg_point_3d<T> >)
+    .def("__str__", stream2str<vgl_homg_point_3d<T> >)
+    .add_property("x", &vgl_get_x<vgl_homg_point_3d<T> >)
+    .add_property("y", &vgl_get_y<vgl_homg_point_3d<T> >)
+    .add_property("z", &vgl_get_z<vgl_homg_point_3d<T> >)
+    .add_property("w", &vgl_get_w<vgl_homg_point_3d<T> >);
+}
+
+template<class T>
+void wrap_vgl_vector_2d(std::string const& class_name)
+{
+  class_<vgl_vector_2d<T> > (class_name.c_str())
+    .def(init<T,T>())
+    .def("__len__", two<vgl_vector_2d<T> >)
+    .def("__getitem__",vgl_getitem_2d<vgl_vector_2d<T> >)
+    .def("__str__", stream2str<vgl_vector_2d<T> >)
+    .add_property("x", &vgl_vector_2d<T>::x)
+    .add_property("y", &vgl_vector_2d<T>::y)
+    .def("length", &vgl_vector_2d<T>::length);
+}
+
+template <class T>
+void wrap_vgl_vector_3d(std::string const& class_name)
+{
+  class_<vgl_vector_3d<T> > (class_name.c_str())
+    .def(init<T,T,T>())
+    .def("__len__", three<vgl_vector_3d<T> >)
+    .def("__getitem__", vgl_getitem_3d<vgl_vector_3d<T> >)
+    .def("__str__", stream2str<vgl_vector_3d<T> >)
+    .add_property("x", &vgl_vector_3d<T>::x)
+    .add_property("y", &vgl_vector_3d<T>::y)
+    .add_property("z", &vgl_vector_3d<T>::z)
+    .def("length", &vgl_vector_3d<T>::length);
+}
+
+template<class T>
+void wrap_vgl_rotation_3d(std::string const& class_name)
+{
+  class_ <vgl_rotation_3d<T> > (class_name.c_str())
+    .def(init<vnl_vector_fixed<T,4> >())
+    .def(init<vnl_matrix_fixed<T,3,3> >())
+    .def("__str__", stream2str<vgl_rotation_3d<T> >)
+    .def("as_matrix", &vgl_rotation_3d<T>::as_matrix);
+}
 
 void pyvxl::wrap_vgl()
 {
-  class_<vgl_point_2d<double> > ("vgl_point_2d")
-    .def(init<double,double>())
-    .def("__len__", two<vgl_point_2d<double> >)
-    .def("__getitem__", vgl_getitem_2d<vgl_point_2d<double> >)
-    .def("__str__", stream2str<vgl_point_2d<double> >)
-    .add_property("x", &vgl_get_x<vgl_point_2d<double> >)
-    .add_property("y", &vgl_get_y<vgl_point_2d<double> >);
-
-  class_<vgl_homg_point_2d<double> > ("vgl_homg_point_2d")
-    .def(init<double,double>())
-    .def(init<double,double,double>())
-    .def(init<vgl_point_2d<double> >())
-    .def("__len__", three<vgl_homg_point_2d<double> >)
-    .def("__getitem__", vgl_getitem_homg_2d<vgl_homg_point_2d<double> >)
-    .def("__str__", stream2str<vgl_homg_point_2d<double> >)
-    .add_property("x", &vgl_get_x<vgl_homg_point_2d<double> >)
-    .add_property("y", &vgl_get_y<vgl_homg_point_2d<double> >)
-    .add_property("w", &vgl_get_w<vgl_homg_point_2d<double> >);
-
-  class_<vgl_homg_point_3d<double> > ("vgl_homg_point_3d")
-    .def(init<double,double,double>())
-    .def(init<double,double,double,double>())
-    .def(init<vgl_point_3d<double> >())
-    .def("__len__", four<vgl_homg_point_3d<double> >)
-    .def("__getitem__", vgl_getitem_homg_3d<vgl_homg_point_3d<double> >)
-    .def("__str__", stream2str<vgl_homg_point_3d<double> >)
-    .add_property("x", &vgl_get_x<vgl_homg_point_3d<double> >)
-    .add_property("y", &vgl_get_y<vgl_homg_point_3d<double> >)
-    .add_property("z", &vgl_get_z<vgl_homg_point_3d<double> >)
-    .add_property("w", &vgl_get_w<vgl_homg_point_3d<double> >);
-
-  class_<vgl_vector_2d<double> > ("vgl_vector_2d")
-    .def(init<double,double>())
-    .def("__len__", two<vgl_vector_2d<double> >)
-    .def("__getitem__",vgl_getitem_2d<vgl_vector_2d<double> >)
-    .def("__str__", stream2str<vgl_vector_2d<double> >)
-    .add_property("x", &vgl_vector_2d<double>::x)
-    .add_property("y", &vgl_vector_2d<double>::y)
-    .def("length", &vgl_vector_2d<double>::length);
-
-  class_<vgl_point_3d<double> > ("vgl_point_3d")
-    .def(init<double,double,double>())
-    .def("__len__", three<vgl_point_3d<double> >)
-    .def("__getitem__", vgl_getitem_3d<vgl_point_3d<double> >)
-    .def("__str__", stream2str<vgl_point_3d<double> >)
-    .add_property("x", vgl_get_x<vgl_point_3d<double> >)
-    .add_property("y", vgl_get_y<vgl_point_3d<double> >)
-    .add_property("z", vgl_get_z<vgl_point_3d<double> >);
-
-  class_<vgl_vector_3d<double> > ("vgl_vector_3d")
-    .def(init<double,double,double>())
-    .def("__len__", three<vgl_vector_3d<double> >)
-    .def("__getitem__", vgl_getitem_3d<vgl_vector_3d<double> >)
-    .def("__str__", stream2str<vgl_vector_3d<double> >)
-    .add_property("x", &vgl_vector_3d<double>::x)
-    .add_property("y", &vgl_vector_3d<double>::y)
-    .add_property("z", &vgl_vector_3d<double>::z)
-    .def("length", &vgl_vector_3d<double>::length);
-
-  class_ <vgl_rotation_3d<double> > ("vgl_rotation_3d")
-    .def(init<vnl_vector_fixed<double,4> >())
-    .def(init<vnl_matrix_fixed<double,3,3> >())
-    .def("__str__", stream2str<vgl_rotation_3d<double> >)
-    .def("as_matrix", &vgl_rotation_3d<double>::as_matrix);
-
+  wrap_vgl_point_2d<double>("vgl_point_2d");
+  wrap_vgl_homg_point_2d<double>("vgl_homg_point_2d");
+  wrap_vgl_point_3d<double>("vgl_point_3d");
+  wrap_vgl_homg_point_3d<double>("vgl_homg_point_3d");
+  wrap_vgl_vector_2d<double>("vgl_vector_2d");
+  wrap_vgl_vector_3d<double>("vgl_vector_3d");
+  wrap_vgl_rotation_3d<double>("vgl_rotation_3d");
 }
